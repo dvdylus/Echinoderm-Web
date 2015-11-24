@@ -1,0 +1,4 @@
+---- Integration of WMISH to Afi.db ----
+
+1) Addition of new genes into folder has to automatically update the possibility to get a picture!
+2) 
