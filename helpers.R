@@ -2,6 +2,8 @@ library(ggplot2)
 library(scales)
 library(reshape2)
 library(stringr)
+source("ggplot_pLIB.R")
+
 all_images <- dir("www/WMISH/")
 
 #---------------------------------
@@ -176,6 +178,7 @@ exp.plot.line <- function(indata, ylab="", combine="all", ytrans="", scales="fix
     theme(axis.text.x = element_text(color='black'),
           axis.text.y = element_text(color='black'))   
   
+  plot <- plot + theme_Publication(base_size=14)
   # decide legend
   if (legend==F) {
     plot <- plot + theme(legend.position = "none")
@@ -248,6 +251,7 @@ exp.plot.heat <- function (indata, title="", palette="YlOrRd", basesize=18, unit
   }
   
   plotdata$fullname<-paste(plotdata$Cluster_ID, plotdata$Annotation, sep=" = ")
+  #plotdata$fullname[which(plotdata$Annotation=='')]<-plotdata$Cluster_ID[which(plotdata$Annotation=='')]
   
   # melt
   plotdata.m <- melt(plotdata, id=c("Cluster_ID", "Annotation", "fullname"), variable.name="time")
@@ -262,7 +266,7 @@ exp.plot.heat <- function (indata, title="", palette="YlOrRd", basesize=18, unit
     theme(axis.text.x = element_text(color='black'),
           axis.text.y = element_text(color='black')) +
     labs(title=title, x="Time", y="")
-  
+  plot <- plot + theme_Publication(base_size=14)
   return(plot)
 }
 
@@ -317,7 +321,7 @@ exp.plot.diff <- function(indata, combine="all", palette="YlOrRd", basesize=18) 
     plotdata          <- plotdata[order(plotdata$Cluster_ID, decreasing=T), ]   
   }
   
-  
+  #plotdata$Annotation[which(plotdata$Annotation=='')]<-plotdata$Cluster_ID[which(plotdata$Annotation=='')]
   # melt
   plotdata.m <- melt(plotdata, id=c("Cluster_ID","Effect","Annotation"), variable.name="differ")
   
@@ -344,13 +348,13 @@ exp.plot.diff <- function(indata, combine="all", palette="YlOrRd", basesize=18) 
     #geom_text(aes(y=10,label=text), position="dodge",hjust=1, vjust=0, size=5, angle= 90 ,colour="black")+
     ylim(-10,10)+
     scale_fill_brewer(palette=palette, name="Differential") + 
-    theme_grey(base_size = basesize) +
+    theme_Publication(base_size=14) +
     theme(axis.text.x = element_text(color='black',angle = 90, hjust = 1),
           axis.text.y = element_text(color='black')) + 
-    geom_hline(yintercept=1.6)+ geom_hline(yintercept=-1.6) +
+    geom_hline(yintercept=1.6, colour="#990000", linetype="dashed")+ geom_hline(yintercept=-1.6, colour="#990000", linetype="dashed") +
     ylab("log2(FC)") +
     xlab("Cluster")
-    
+
   
   return(plot)
   
